@@ -2,14 +2,7 @@ import { RhythmNote } from '@/types/rhythm'
 import Vex from 'vexflow'
 
 const { Renderer, Stave, StaveNote, Voice, Formatter } = Vex.Flow
-
-function beatsToVexDuration(beats: number): string {
-  if (beats >= 4) return 'w'
-  if (beats >= 2) return 'h'
-  if (beats >= 1) return 'q'
-  if (beats >= 0.5) return '8'
-  return '16'
-}
+type VexStaveNote = InstanceType<typeof StaveNote>
 
 function beatsToNoteDuration(beats: number): { duration: string; dots: number } {
   const wholeDurations: Record<number, { duration: string; dots: number }> = {
@@ -34,7 +27,7 @@ export function renderStaff(container: HTMLElement, notes: RhythmNote[]): void {
   const height = 200
 
   try {
-    const renderer = new Renderer(container, Renderer.Backends.SVG)
+    const renderer = new Renderer(container as HTMLDivElement, Renderer.Backends.SVG)
     renderer.resize(width, height)
     const context = renderer.getContext()
     console.log('Renderer created successfully')
@@ -44,7 +37,7 @@ export function renderStaff(container: HTMLElement, notes: RhythmNote[]): void {
     stave.addTimeSignature('4/4')
     stave.setContext(context).draw()
 
-    const vexNotes: StaveNote[] = notes.map((note) => {
+    const vexNotes: VexStaveNote[] = notes.map((note) => {
       const { duration, dots } = beatsToNoteDuration(note.durationBeats)
 
       const durationString = note.isRest ? `${duration}r` : duration

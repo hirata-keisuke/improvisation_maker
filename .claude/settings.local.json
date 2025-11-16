@@ -3,7 +3,9 @@
     "allow": [
       "Bash(npm install)",
       "Bash(npm test:*)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(lsof:*)",
+      "Bash(npx tsc --noEmit)"
     ],
     "deny": [],
     "ask": []
